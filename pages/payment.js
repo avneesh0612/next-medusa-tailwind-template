@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
-import StoreContext from "../context/store-context";
-import itemStyles from "../styles/cart-view.module.css";
-import styles from "../styles/payment.module.css";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { useContext, useEffect, useState } from "react";
+import StoreContext from "../context/store-context";
 import { formatPrice } from "../utils/helper-functions";
 
 const style = {
@@ -30,17 +28,17 @@ export const Payment = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return !order || !styles ? (
-    <div style={style}>
+  return !order ? (
+    <div>
       <p>Hang on while we validate your payment...</p>
     </div>
   ) : (
-    <div className={styles.container}>
-      <div className={styles.header}>
+    <div className="flex flex-col justify-center px-24 mx-auto max-w-[560px] min-h-screen mb-8">
+      <div className="border-b-[1px] border-logo-100 mt-16">
         <h1>Order Summary</h1>
         <p>Thank you for your order!</p>
       </div>
-      <div className={styles.items}>
+      <div className="py-6 border-b-[1px] border-logo-100 mb-2">
         {order.items
           .sort((a, b) => {
             const createdAtA = new Date(a.created_at),
@@ -52,8 +50,8 @@ export const Payment = () => {
           })
           .map((i) => {
             return (
-              <div key={i.id} className={styles.item}>
-                <div className={itemStyles.product}>
+              <div key={i.id} className="mb-2">
+                <div className="relative flex min-h-[120px] px-9 py-6">
                   <figure>
                     <Link
                       href={{
@@ -63,19 +61,19 @@ export const Payment = () => {
                       passHref
                     >
                       <a>
-                      <div className={itemStyles.placeholder}>
-                        <Image
-                          objectFit="cover"
-                          height="100%"
-                          width="100%"
-                          src={i.variant.product.thumbnail}
-                          alt={`${i.title}`}
-                        />
-                      </div>
+                        <div className="relative w-full h-full cursor-auto">
+                          <Image
+                            objectFit="cover"
+                            height="100%"
+                            width="100%"
+                            src={i.variant.product.thumbnail}
+                            alt={`${i.title}`}
+                          />
+                        </div>
                       </a>
                     </Link>
                   </figure>
-                  <div className={itemStyles.controls}>
+                  <div className="flex flex-col justify-around">
                     <div>
                       <div>
                         <Link
@@ -87,14 +85,14 @@ export const Payment = () => {
                         >
                           <a>{i.title}</a>
                         </Link>
-                        <p className={itemStyles.size}>
+                        <p className="text-sm text-gray-600">
                           Size: {i.variant.title}
                         </p>
-                        <p className={itemStyles.size}>
+                        <p className="text-sm text-gray-600">
                           Price:{" "}
                           {formatPrice(i.unit_price, order.currency_code)}
                         </p>
-                        <p className={itemStyles.size}>
+                        <p className="text-sm text-gray-600">
                           Quantity: {i.quantity}
                         </p>
                       </div>
@@ -105,24 +103,26 @@ export const Payment = () => {
             );
           })}
       </div>
-      <div className={styles.breakdown}>
-        <div className={styles.price}>
-          <div>Subtotal</div>
+      <div className="flex items-center justify-around">
+        <div className="flex justify-between py-2">
+          <div className="mr-2">Subtotal</div>
           <div>{formatPrice(order.subtotal, order.region.currency_code)}</div>
         </div>
-        <div className={styles.price}>
-          <div>Shipping</div>
+        <div className="flex justify-between py-2">
+          <div className="mr-2">Shipping</div>
           <div>
             {formatPrice(order.shipping_total, order.region.currency_code)}
           </div>
         </div>
-        <div className={`${styles.price} ${styles.total}`}>
-          <div>Total</div>
+        <div
+          className={`flex justify-between py-2 font-bold border-b-[1px] border-logo-100`}
+        >
+          <div className="mr-2">Total</div>
           <div>{formatPrice(order.total, order.region.currency_code)}</div>
         </div>
       </div>
-      <div>
-        <p>An order comfirmation will be sent to you at {order.email}</p>
+      <div className="mt-4">
+        <p>An order confirmation will be sent to you at {order.email}</p>
       </div>
     </div>
   );

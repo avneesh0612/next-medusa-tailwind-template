@@ -1,10 +1,9 @@
-import React, { useContext, useState } from "react";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useRouter } from "next/router";
-import StoreContext from "../../context/store-context";
-import DisplayContext from "../../context/display-context";
-import styles from "../../styles/injectable-payment-card.module.css";
+import { useContext, useState } from "react";
 import { BiLeftArrowAlt } from "react-icons/bi";
+import DisplayContext from "../../context/display-context";
+import StoreContext from "../../context/store-context";
 
 const InjectablePaymentCard = () => {
   const stripe = useStripe();
@@ -48,7 +47,7 @@ const InjectablePaymentCard = () => {
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
       <CardElement
-        className={styles.cardForm}
+        className="p-8 bg-white rounded-lg shadow-lg"
         id="card-element"
         onChange={handleChange}
       />
@@ -58,15 +57,15 @@ const InjectablePaymentCard = () => {
           {error}
         </div>
       )}
-      <div className={styles.controls}>
+      <div className="flex items-center justify-between mt-8">
         <button
-          className={styles.stepBack}
+          className="flex items-center text-base bg-transparent border-none"
           onClick={() => updateCheckoutStep(2)}
         >
-          <BiLeftArrowAlt /> Back to shipping method
+          <BiLeftArrowAlt className="mr-2" /> Back to shipping method
         </button>
         <button
-          className={styles.payBtn}
+          className="text-lg min-h-[3rem] min-w-[3rem] py-2 px-5 self-center inline-flex items-center bg-logo-900 text-white border-none transition-colors ease-in duration-200"
           disabled={processing || disabled || succeeded}
           id="submit"
         >

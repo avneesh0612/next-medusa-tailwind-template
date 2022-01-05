@@ -1,13 +1,12 @@
-import React, { useEffect, useContext } from "react";
 import { Elements } from "@stripe/react-stripe-js";
-import StoreContext from "../../context/store-context";
-import InjectablePaymentCard from "./injectable-payment-card";
-import styles from "../../styles/injectable-payment-card.module.css";
-import getStripe from "../../utils/stripe";
 import { useRouter } from "next/router";
+import { useContext, useEffect } from "react";
+import StoreContext from "../../context/store-context";
+import getStripe from "../../utils/stripe";
+import InjectablePaymentCard from "./injectable-payment-card";
 
 const PaymentStep = () => {
-  const router = useRouter()
+  const router = useRouter();
   const { cart, createPaymentSession, setPaymentSession } =
     useContext(StoreContext);
 
@@ -15,9 +14,9 @@ const PaymentStep = () => {
     createPaymentSession();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   const handlePayment = async () => {
-    await setPaymentSession("manual")
+    await setPaymentSession("manual");
     router.push(`/payment`);
   };
 
@@ -43,7 +42,7 @@ const PaymentStep = () => {
                   <h2>Test Payment</h2>
                   <button
                     onClick={handlePayment}
-                    className={styles.payBtn}
+                    className="min-h-[3rem] text-lg min-w-[3rem] py-2 px-5 self-center inline-flex items-center bg-logo-900 text-white rounded-lg ease-in duration-200 transition-colors hover:bg-logo-1000 font-medium"
                     id="submit"
                   >
                     <span id="button-text">Pay</span>

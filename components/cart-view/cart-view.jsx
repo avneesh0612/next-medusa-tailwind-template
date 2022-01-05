@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useContext } from "react";
 import DisplayContext from "../../context/display-context";
 import StoreContext from "../../context/store-context";
-import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import styles from "../../styles/cart-view.module.css";
-import { quantity, sum, formatPrice } from "../../utils/helper-functions";
+import { formatPrice, quantity, sum } from "../../utils/helper-functions";
 import { formatPrices } from "../../utils/prices";
 
 const CartView = () => {
@@ -16,8 +15,12 @@ const CartView = () => {
   const router = useRouter();
 
   return (
-    <div className={`${styles.container} ${cartView ? styles.active : null}`}>
-      <div className={styles.top}>
+    <div
+      className={`fixed min-w-[460px] h-screen max-h-screen shadow-lg bg-white z-20 flex flex-col overflow-hidden justify-between -right-[460px] top-0 translate-x-[110%] ${
+        cartView ? "translate-x-[-460px]" : null
+      }`}
+    >
+      <div className="flex items-center justify-between py-4 px-9">
         <p>Bag</p>
         <p>
           {cart.items.length > 0 ? cart.items.map(quantity).reduce(sum) : 0}{" "}
@@ -26,13 +29,13 @@ const CartView = () => {
             : "items"}
         </p>
         <button
-          className={styles.closebtn}
+          className="bg-transparent border-none cursor-pointer"
           onClick={() => updateCartViewDisplay()}
         >
           X
         </button>
       </div>
-      <div className={styles.overview}>
+      <div className="overview">
         {cart.items
           .sort((a, b) => {
             const createdAtA = new Date(a.created_at),
@@ -44,8 +47,11 @@ const CartView = () => {
           })
           .map((i) => {
             return (
-              <div key={i.id} className={styles.product}>
-                <figure onClick={() => updateCartViewDisplay()}>
+              <div key={i.id} className="px-9 py-6 relative min-h-[120px] flex">
+                <figure
+                  className="w-32 h-48 mr-4 bg-bg"
+                  onClick={() => updateCartViewDisplay()}
+                >
                   <Link
                     href={{
                       pathname: `/product/[id]`,
@@ -54,19 +60,19 @@ const CartView = () => {
                     passHref
                   >
                     <a>
-                      <div className={styles.placeholder}>
-                      <Image
-                        objectFit="cover"
-                        height="100%"
-                        width="100%"
-                        src={i.variant.product.thumbnail}
-                        alt={`${i.title}`}
-                      />
+                      <div className="relative w-full h-full cursor-pointer">
+                        <Image
+                          objectFit="cover"
+                          height="100%"
+                          width="100%"
+                          src={i.variant.product.thumbnail}
+                          alt={`${i.title}`}
+                        />
                       </div>
                     </a>
                   </Link>
                 </figure>
-                <div className={styles.controls}>
+                <div className="flex flex-col justify-around">
                   <div>
                     <div>
                       <Link
@@ -78,17 +84,18 @@ const CartView = () => {
                       >
                         <a>{i.title}</a>
                       </Link>
-                      <p className={styles.size}>Size: {i.variant.title}</p>
-                      <p className={styles.size}>
-                        Price:{" "}
-                        {formatPrices(cart, i.variant)}
+                      <p className="text-sm text-gray-600">
+                        Size: {i.variant.title}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Price: {formatPrices(cart, i.variant)}
                       </p>
                     </div>
                     <div>
-                      <div className={styles.mid}>
-                        <div className={styles.selector}>
+                      <div className="flex flex-col">
+                        <div className="flex items-center">
                           <button
-                            className={styles.qtybtn}
+                            className="text-gray-600 transition-colors duration-100 ease-in bg-transparent border-none cursor-pointer hover:text-logo-900"
                             onClick={() =>
                               updateLineItem({
                                 lineId: i.id,
@@ -98,9 +105,9 @@ const CartView = () => {
                           >
                             {"–"}
                           </button>
-                          <p className={styles.ticker}>{i.quantity}</p>
+                          <p className="w-4 text-center">{i.quantity}</p>
                           <button
-                            className={styles.qtybtn}
+                            className="text-gray-600 transition-colors duration-100 ease-in bg-transparent border-none cursor-pointer hover:text-logo-900"
                             onClick={() =>
                               updateLineItem({
                                 lineId: i.id,
@@ -116,7 +123,7 @@ const CartView = () => {
                     </div>
                   </div>
                   <button
-                    className={styles.remove}
+                    className="text-left text-gray-400 underline transition-colors duration-100 ease-in bg-transparent border-none cursor-pointer hover:text-logo-900"
                     onClick={() => removeLineItem(i.id)}
                   >
                     Remove
@@ -126,15 +133,15 @@ const CartView = () => {
             );
           })}
       </div>
-      <div className={styles.subtotal}>
+      <div className="flex items-center justify-between py-4 px-9">
         <p>Subtotal (incl. taxes)</p>
         <span>
           {cart.region ? formatPrice(cart.subtotal, currencyCode) : 0}
         </span>
       </div>
-      <div className={styles.bottom}>
+      <div className="py-4 px-9">
         <button
-          className={styles.checkoutbtn}
+          className="w-full text-lg min-h-[3rem] py-2 self-center inline-flex items-center justify-center bg-logo-900 text-white rounded-lg transition-colors ease-in duration-200 hover:bg-logo-1000 cursor-pointer border-none font-medium"
           onClick={() => {
             updateCheckoutStep(1);
             updateCartViewDisplay();

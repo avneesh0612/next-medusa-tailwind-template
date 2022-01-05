@@ -1,23 +1,23 @@
-import React, { useContext } from "react";
-import { PuffLoader } from "react-spinners";
-import styles from "../../styles/checkout-summary.module.css";
-import itemStyles from "../../styles/cart-view.module.css";
-import Link from "next/link";
 import Image from "next/image";
-import { formatPrice } from "../../utils/helper-functions";
-import { sum, quantity } from "../../utils/helper-functions";
+import Link from "next/link";
+import { useContext } from "react";
+import { PuffLoader } from "react-spinners";
 import DisplayContext from "../../context/display-context";
+import { formatPrice, quantity, sum } from "../../utils/helper-functions";
 import { formatPrices } from "../../utils/prices";
 
 const CheckoutSummary = ({ cart }) => {
   const { orderSummary, updateOrderSummaryDisplay } =
     useContext(DisplayContext);
+
   return cart ? (
-    <div className={`${styles.container} ${orderSummary ? styles.active : ""}`}>
-      <div className={itemStyles.top}>
-        <p>
-          <strong>Order Summary</strong>
-        </p>
+    <div
+      className={`fixed w-2/5 h-screen max-h-screen shadow-lg bg-white z-20 flex flex-col overflow-hidden justify-between right-0 top-0 ${
+        orderSummary ? "translate-y-0" : ""
+      }`}
+    >
+      <div className="flex items-center justify-center py-4 px-9">
+        <p className="text-lg font-semibold">Order Summary</p>
         <p>
           {cart.items.length > 0 ? cart.items.map(quantity).reduce(sum) : 0}{" "}
           {cart.items.length > 0 && cart.items.map(quantity).reduce(sum) === 1
@@ -25,13 +25,13 @@ const CheckoutSummary = ({ cart }) => {
             : "items"}
         </p>
         <button
-          className={styles.closeBtn}
+          className="block bg-transparent border-none cursor-pointer md:hidden"
           onClick={() => updateOrderSummaryDisplay()}
         >
           X
         </button>
       </div>
-      <div className={itemStyles.overview}>
+      <div className="overview">
         {cart.items
           .sort((a, b) => {
             const createdAtA = new Date(a.created_at),
@@ -43,7 +43,7 @@ const CheckoutSummary = ({ cart }) => {
           })
           .map((i) => {
             return (
-              <div key={i.id} className={itemStyles.product}>
+              <div key={i.id} className="py-4 px-9 relative min-h-[120px] flex">
                 <figure>
                   <Link
                     href={{
@@ -53,7 +53,7 @@ const CheckoutSummary = ({ cart }) => {
                     passHref
                   >
                     <a>
-                      <div className={itemStyles.placeholder}>
+                      <div className="relative w-full h-full cursor-pointer">
                         <Image
                           objectFit="cover"
                           height="100%"
@@ -65,7 +65,7 @@ const CheckoutSummary = ({ cart }) => {
                     </a>
                   </Link>
                 </figure>
-                <div className={itemStyles.controls}>
+                <div className="flex flex-col justify-around">
                   <div>
                     <div>
                       <Link
@@ -77,12 +77,15 @@ const CheckoutSummary = ({ cart }) => {
                       >
                         <a>{i.title}</a>
                       </Link>
-                      <p className={itemStyles.size}>Size: {i.variant.title}</p>
-                      <p className={itemStyles.size}>
-                        Price:{" "}
-                        {formatPrices(cart, i.variant)}
+                      <p className="text-sm text-gray-600">
+                        Size: {i.variant.title}
                       </p>
-                      <p className={itemStyles.size}>Quantity: {i.quantity}</p>
+                      <p className="text-sm text-gray-600">
+                        Price: {formatPrices(cart, i.variant)}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Quantity: {i.quantity}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -90,31 +93,31 @@ const CheckoutSummary = ({ cart }) => {
             );
           })}
       </div>
-      <div className={styles.breakdown}>
-        <p>Subtotal (incl. taxes)</p>
+      <div className="flex items-center justify-between py-2 px-9">
+        <p className="mr-2">Subtotal (incl. taxes)</p>
         <span>
           {cart.region
             ? formatPrice(cart.subtotal, cart.region.currency_code)
             : 0}
         </span>
       </div>
-      <div className={styles.breakdown}>
-        <p>Shipping</p>
+      <div className="flex items-center justify-between py-2 px-9">
+        <p className="mr-2">Shipping</p>
         <span>
           {cart.region
             ? formatPrice(cart.shipping_total, cart.region.currency_code)
             : 0}
         </span>
       </div>
-      <div className={styles.total}>
-        <p>Total</p>
+      <div className="flex items-center justify-between py-2 px-9">
+        <p className="mr-2">Total</p>
         <span>
           {cart.region ? formatPrice(cart.total, cart.region.currency_code) : 0}
         </span>
       </div>
     </div>
   ) : (
-    <div className={styles.spinnerContainer}>
+    <div className="flex items-center justify-center w-full h-screen">
       <PuffLoader />
     </div>
   );

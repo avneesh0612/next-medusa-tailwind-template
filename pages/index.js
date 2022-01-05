@@ -1,4 +1,3 @@
-import styles from "../styles/home.module.css";
 import Link from "next/link";
 import { createClient } from "../utils/client";
 import { FaGithub } from "react-icons/fa";
@@ -7,25 +6,25 @@ import { useContext } from "react";
 import StoreContext from "../context/store-context";
 
 export default function Home({ products }) {
-  const { cart } = useContext(StoreContext)
-  
+  const { cart } = useContext(StoreContext);
+
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <div className={styles.hero}>
-          <h1 className={styles.title}>
-            Medusa + Next.js Starter{" "}
+    <div className="flex flex-col items-center justify-center min-h-screen px-20">
+      <main className="flex flex-col items-center justify-center py-20">
+        <div className="text-left space-y-4 max-w-[800px]">
+          <h1 className="text-2xl">
+            <span className="font-bold">Medusa + Next.js Starter</span>{" "}
             <span role="img" aria-label="Rocket emoji">
               🚀
             </span>
           </h1>
-          <p className={styles.description}>
+          <p className="text-lg">
             Build blazing-fast client applications on top of a modular headless
             commerce engine. Integrate seamlessly with any 3rd party tools for a
             best-in-breed commerce stack.
           </p>
-          <div className={styles.tags}>
-            <div className={styles.tag} style={{ background: "lightgrey" }}>
+          <div className="flex items-center mb-12 flex-nowrap">
+            <div className="p-3 mr-4 text-sm bg-gray-300 rounded-md">
               v{process.env.NEXT_PUBLIC_APP_VERSION}
             </div>
             <a
@@ -34,10 +33,7 @@ export default function Home({ products }) {
               rel="noreferrer"
               role="button"
             >
-              <div
-                className={styles.tag}
-                style={{ background: "var(--logo-color-900)", color: "white" }}
-              >
+              <div className="p-3 mr-4 text-sm text-white rounded-md bg-logo-900">
                 Medusa
               </div>
             </a>
@@ -48,7 +44,7 @@ export default function Home({ products }) {
               role="button"
             >
               <div
-                className={styles.tag}
+                className="p-3 mr-4 text-sm rounded-md"
                 style={{ background: "#111111", color: "white" }}
               >
                 Next.js
@@ -61,20 +57,20 @@ export default function Home({ products }) {
               role="button"
             >
               <div
-                className={styles.tag}
+                className="p-3 mr-4 text-sm rounded-md"
                 style={{ background: "#4379FF", color: "white" }}
               >
                 Stripe
               </div>
             </a>
           </div>
-          <div className={styles.links}>
+          <div className="flex items-center">
             <a
               href="https://docs.medusa-commerce.com/"
               target="_blank"
               rel="noreferrer"
               role="button"
-              className={styles.btn}
+              className="min-h-[3rem] text-lg min-w-[3rem] py-2 px-5 self-center inline-flex items-center bg-logo-900 text-white rounded-lg ease-in duration-200 transition-colors hover:bg-logo-1000 font-medium"
             >
               Read the docs
               <svg
@@ -90,31 +86,34 @@ export default function Home({ products }) {
               </svg>
             </a>
             <a
-              href="https://github.com/medusajs/nextjs-starter-medusa"
+              href="https://github.com/avneesh0612/next-medusa-tailwind-template"
               target="_blank"
               rel="noreferrer"
               role="button"
-              className={styles.btn}
+              className="min-h-[3rem] text-lg min-w-[3rem] py-2 px-5 self-center inline-flex items-center bg-logo-900 text-white rounded-lg ease-in duration-200 transition-colors hover:bg-logo-1000 font-medium ml-5"
             >
               View on GitHub
-              <FaGithub />
+              <FaGithub className="w-6 h-6 ml-2" />
             </a>
           </div>
         </div>
-        <div className={styles.products}>
+        <div className="flex flex-col items-start w-full mr-12">
           <h2>Demo Products</h2>
-          <div className={styles.grid}>
+          <div className="flex flex-wrap items-center justify-center">
             {products &&
               products.map((p) => {
                 return (
-                  <div key={p.id} className={styles.card}>
+                  <div
+                    key={p.id}
+                    className="mr-4 p-6 text-left border-gray-300 border-[1px] rounded-xl hover:text-logo-900 hover:border-logo-900 focus:text-logo-900 focus:border-logo-900 m-5 transition duration-100 delay-75"
+                  >
                     <Link
                       href={{ pathname: `/product/[id]`, query: { id: p.id } }}
                       passHref
                     >
                       <a>
                         <div>
-                          <h2>{p.title}</h2>
+                          <h2 className="mb-2 text-xl">{p.title}</h2>
                           <p>{formatPrices(cart, p.variants[0])}</p>
                         </div>
                       </a>

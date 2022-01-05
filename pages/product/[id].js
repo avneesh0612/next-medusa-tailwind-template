@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
-import Image from "next/image"
+import Image from "next/image";
 import { BiShoppingBag } from "react-icons/bi";
 import StoreContext from "../../context/store-context";
 import { formatPrice, resetOptions } from "../../utils/helper-functions";
-import styles from "../../styles/product.module.css";
 import { createClient } from "../../utils/client";
 import { formatPrices } from "../../utils/prices";
 
@@ -53,29 +52,26 @@ const Product = ({ product }) => {
   };
 
   return (
-    <div className={styles.container}>
-      <figure className={styles.image}>
-        <div className={styles.placeholder}>
+    <div className="flex w-full min-h-screen">
+      <figure className="w-3/5 h-screen">
+        <div className="relative w-full h-full bg-bg">
           <Image
             objectFit="cover"
-            height="100%"
-            width="100%"
-            priority={true}
-            loading="eager"
+            layout="fill"
             src={product.thumbnail}
             alt={`${product.title}`}
           />
         </div>
       </figure>
-      <div className={styles.info}>
+      <div className="flex flex-col justify-center px-12 py-2">
         <span />
-        <div className={styles.details}>
+        <div>
           <div className="title">
             <h1>{product.title}</h1>
           </div>
           <p className="price">{formatPrices(cart, product.variants[0])}</p>
-          <div className={styles.selection}>
-            <p>Select Size</p>
+          <div className="my-8">
+            <p className="mb-3">Select Size</p>
             <div className="selectors">
               {product.variants
                 .slice(0)
@@ -84,8 +80,10 @@ const Product = ({ product }) => {
                   return (
                     <button
                       key={v.id}
-                      className={`${styles.sizebtn} ${
-                        v.title === options.size ? styles.selected : null
+                      className={`p-3 border-none bg-gray-300 rounded-sm h-10 w-10 mr-2 transition-all duration-100 ease-in hover:brightness-95 filter ${
+                        v.title === options.size
+                          ? "bg-logo-900 text-white"
+                          : null
                       }`}
                       onClick={() =>
                         setOptions({
@@ -101,31 +99,38 @@ const Product = ({ product }) => {
                 })}
             </div>
           </div>
-          <div className={styles.selection}>
-            <p>Select Quantity</p>
-            <div className={styles.qty}>
+          <div className="my-8">
+            <p className="mb-3">Select Quantity</p>
+            <div className="flex items-center">
               <button
-                className={styles.qtybtn}
+                className="w-10 h-10 transition-all duration-200 ease-in border-none rounded-sm hover:bg-logo-100 focus:bg-logo-100"
                 onClick={() => handleQtyChange("dec")}
               >
                 -
               </button>
-              <span className={styles.ticker}>{options.quantity}</span>
+              <span className="flex items-center justify-center text-center w-9 h-9">
+                {options.quantity}
+              </span>
               <button
-                className={styles.qtybtn}
+                className="w-10 h-10 transition-all duration-200 ease-in border-none rounded-sm hover:bg-logo-100 focus:bg-logo-100"
                 onClick={() => handleQtyChange("inc")}
               >
                 +
               </button>
             </div>
           </div>
-          <button className={styles.addbtn} onClick={() => handleAddToBag()}>
+          <button
+            className="flex items-center px-4 py-2 space-x-2 text-white rounded-lg bg-logo-1000"
+            onClick={() => handleAddToBag()}
+          >
             <span>Add to bag</span>
-            <BiShoppingBag />
+            <BiShoppingBag className="w-6 h-6 text-white fill-current" />
           </button>
-          <div className={styles.tabs}>
+          <div className="mt-8 max-w-[500px]">
             <div className="tab-titles">
-              <button className={styles.tabtitle}>Product Description</button>
+              <button className="py-2 text-base border-n-[1px] border-logo-400  border-none bg-transparent">
+                Product Description
+              </button>
             </div>
             <div className="tab-content">
               <p>{product.description}</p>

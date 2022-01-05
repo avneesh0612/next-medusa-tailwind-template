@@ -1,12 +1,10 @@
-import React from "react";
-import styles from "../../styles/shipping-method.module.css";
 import { formatPrice } from "../../utils/helper-functions";
 
 const ShippingMethod = ({ handleOption, option, chosen }) => {
   return (
     <div
-      className={`${styles.shippingOption} ${
-        option.id === chosen?.id ? styles.chosen : ""
+      className={`flex items-center shadow-lg justify-between bg-white rounded-lg py-4 px-8 cursor-pointer ${
+        option.id === chosen?.id ? "border-[1px] border-logo-400" : ""
       }`}
       onClick={() => handleOption(option)}
       role="button"

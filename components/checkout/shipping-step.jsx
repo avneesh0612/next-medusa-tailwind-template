@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
-import styles from "../../styles/shipping-step.module.css";
-import ShippingMethod from "./shipping-method";
+import { useContext, useEffect, useState } from "react";
 import { BiLeftArrowAlt } from "react-icons/bi";
-import DisplayContext from "../../context/display-context";
-import { isEmpty } from "../../utils/helper-functions";
-import StoreContext from "../../context/store-context";
 import { MdError } from "react-icons/md";
+import DisplayContext from "../../context/display-context";
+import StoreContext from "../../context/store-context";
+import { isEmpty } from "../../utils/helper-functions";
+import ShippingMethod from "./shipping-method";
 
 const ShippingStep = ({ handleDeliverySubmit, isProcessing, cart }) => {
   const [shippingOptions, setShippingOptions] = useState([]);
@@ -48,37 +47,46 @@ const ShippingStep = ({ handleDeliverySubmit, isProcessing, cart }) => {
   };
 
   return (
-    <div className={styles.container}>
-      <h2>Delivery</h2>
-      {isEmpty(shippingOptions) || isProcessing ? (
-        <div>loading...</div>
-      ) : (
-        <div>
-          {shippingOptions.map((so) => {
-            return (
-              <div key={so.id}>
-                <ShippingMethod
-                  option={so}
-                  chosen={selectedOption}
-                  handleOption={handleSelectOption}
-                />
-              </div>
-            );
-          })}
-        </div>
-      )}
-      <div className={`${styles.error} ${error ? styles.active : ""} `}>
-        <MdError />
-        <p>Select a shipping method</p>
+    <div className="flex items-center justify-center w-full p-16 h-[530px]">
+      <div className="flex flex-col items-center space-y-3">
+        <h2>Delivery</h2>
+        {isEmpty(shippingOptions) || isProcessing ? (
+          <div>loading...</div>
+        ) : (
+          <div className="flex space-x-4">
+            {shippingOptions.map((so) => {
+              return (
+                <div key={so.id}>
+                  <ShippingMethod
+                    option={so}
+                    chosen={selectedOption}
+                    handleOption={handleSelectOption}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
-      <div className={styles.controls}>
+      <div
+        className={`flex opacity-0 invisible items-center transition-all duration-100 ease-in text-[#db5461] ${
+          error ? "opacity-100 visible" : ""
+        } `}
+      >
+        <MdError />
+        <p className="mr-2">Select a shipping method</p>
+      </div>
+      <div className="flex flex-col items-center justify-between space-y-2">
         <button
-          className={styles.stepBack}
+          className="flex items-center text-base bg-transparent border-none"
           onClick={() => updateCheckoutStep(1)}
         >
-          <BiLeftArrowAlt /> Back to information
+          Back to information
         </button>
-        <button className={styles.nextBtn} onClick={handleSubmit}>
+        <button
+          className="w-full text-lg min-h-[3rem] py-2 self-center inline-flex items-center justify-center bg-logo-900 text-white rounded-lg transition-colors ease-in duration-200 hover:bg-logo-1000 cursor-pointer border-none font-medium"
+          onClick={handleSubmit}
+        >
           <span id="button-text">Next</span>
         </button>
       </div>
