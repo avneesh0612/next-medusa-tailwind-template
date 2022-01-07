@@ -80,7 +80,7 @@ const Product = ({ product }) => {
                   return (
                     <button
                       key={v.id}
-                      className={`p-3 border-none bg-gray-300 rounded-sm h-10 w-10 mr-2 transition-all duration-100 ease-in hover:brightness-95 filter ${
+                      className={`p-3 border-none bg-gray-300 rounded-sm min-h-[2rem] min-w-[2rem] mr-2 transition-all duration-100 ease-in hover:brightness-95 filter ${
                         v.title === options.size
                           ? "bg-logo-900 text-white"
                           : null
